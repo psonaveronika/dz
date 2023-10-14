@@ -1,4 +1,4 @@
-from collection import Counter
+from collections import Counter
 
 text = input().split()
 def f(text):
