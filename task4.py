@@ -1,12 +1,9 @@
 from collections import Counter
-def b(a):
-    ans = []
-    while a:
-        ans.append(a)
-        a = input()
-    return ans
+from ty import f
+def b(n):
+    print('Элемент | Частота')
+    return Counter(n)
 
-els = b(input())
-print('Элемент | Частота')
-ans = Counter(els)
-print(*[f'{i} | {ans[i]}' for i in ans], sep='\n')
+n = f()
+v = b(n)
+print(*[f'{i} | {sv[i]}' for i in av], sep='\n')
