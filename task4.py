@@ -1,5 +1,6 @@
 from collections import Counter
 from ty import f
+
 def b(n):
     print('Элемент | Частота')
     return Counter(n)
