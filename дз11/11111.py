@@ -1,26 +1,28 @@
-class Matrix: 
-    def __init__(self, rows = 0, columns = 0, elements = []):
+class Matrix:
+    def __init__(self, rows, cols):
         self.rows = rows
-        self.columns = columns
-        self.elements = elements
+        self.cols = cols
+        self.matrix = [[0 for _ in range(cols)] for _ in range(rows)]
 
-    def input_matrix(self): 
-        self.elements = []
-        while True:
-            try:
-                print('Введите  числа:')
-                self.rows, self.columns = int(input('Кол-во строк = ')), int(input('Кол-во столбцов = '))
-            except ValueError:
-                continue 
-            else:
-                break
+    def input_matrix(self):
         for i in range(self.rows):
-            self.elements.append(list(map(float, input(f'Введите элементы строки №{i+1}: ').split())))                  
-            if len(self.elements[i]) != self.columns:
-                raise ValueError('Некорректно введены элементы строки')
+            row = list(map(int, input(f"Enter elements for row {i+1}: ").split()))
+            if len(row) != self.cols:
+                print("Invalid number of elements. Please enter again.")
+                self.input_matrix()
+                return
+            self.matrix[i] = row
 
-    def __str__(self):
-        output = ''
-        for j in range(self.rows):
-            output += ' '.join(str(i) for i in self.elements[j]) + '\n'
-        return output
+    def display_matrix(self):
+        for row in self.matrix:
+            print(" ".join(str(elem) for elem in row))
+
+# Пример использования класса Matrix
+rows = int(input("Enter number of rows: "))
+cols = int(input("Enter number of columns: "))
+
+matrix = Matrix(rows, cols)
+matrix.input_matrix()
+
+print("\nMatrix:")
+matrix.display_matrix()
