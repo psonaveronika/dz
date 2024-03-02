@@ -1,25 +1,29 @@
-iimport unittest
-from unittest.mock import patch
-from io import StringIO
-import sys
+import pytest
+from fractions import Fraction
 from matrix_class import Matrix
 
-class TestMatrixClass(unittest.TestCase):
+def test_input_matrix(monkeypatch):
+    monkeypatch.setattr('builtins.input', lambda _: '2')  # Мокаем ввод пользователя
+    matrix = Matrix()
+    matrix.input_matrix()
+    assert matrix.rows == 2
+    assert matrix.columns == 2
 
-    def test_input_matrix(self):
-        with patch('builtins.input', side_effect=['1 2 3', '4 5 6', '7 8 9']):
-            matrix = Matrix(3, 3)
-            matrix.input_matrix()
-            self.assertEqual(matrix.matrix, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+def test_input_matrix_invalid_elements():
+    matrix = Matrix()
+    matrix.rows = 2
+    matrix.columns = 2
+    with pytest.raises(ValueError):
+        matrix.elements = [[Fraction(1), Fraction(2)], [Fraction(3)]]
+        matrix.input_matrix()
 
-    def test_display_matrix(self):
-        matrix = Matrix(2, 2)
-        matrix.matrix = [[1, 2], [3, 4]]
-        captured_output = StringIO()
-        sys.stdout = captured_output
-        matrix.display_matrix()
-        sys.stdout = sys.__stdout__
-        self.assertEqual(captured_output.getvalue(), "1 2\n3 4\n")
+def test_str_output(capsys):
+    matrix = Matrix(2, 2, [[Fraction(1), Fraction(2)], [Fraction(3), Fraction(4)]])
+    print(matrix)
+    captured = capsys.readouterr()
+    assert captured.out == '1 2\n3 4\n'
 
+# Запуск тестов с помощью pytest
 if __name__ == '__main__':
-    unittest.main()
+    pytest.main()
+
