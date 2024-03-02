@@ -1,28 +1,38 @@
+from fractions import Fraction
+
 class Matrix:
-    def __init__(self, rows, cols):
+    def __init__(self, rows=0, columns=0, elements=[]):
         self.rows = rows
-        self.cols = cols
-        self.matrix = [[0 for _ in range(cols)] for _ in range(rows)]
+        self.columns = columns
+        self.elements = elements
 
     def input_matrix(self):
+        self.elements = []
+        while True:
+            try:
+                print('Введите числа:')
+                self.rows = int(input('Кол-во строк = '))
+                self.columns = int(input('Кол-во столбцов = '))
+            except ValueError:
+                continue
+            else:
+                break
         for i in range(self.rows):
-            row = list(map(int, input(f"Enter elements for row {i+1}: ").split()))
-            if len(row) != self.cols:
-                print("Invalid number of elements. Please enter again.")
-                self.input_matrix()
-                return
-            self.matrix[i] = row
+            self.elements.append([Fraction(elem) for elem in input(f'Введите элементы строки №{i+1}: ').split()])
+            if len(self.elements[i]) != self.columns:
+                raise ValueError('Некорректно введены элементы строки')
 
-    def display_matrix(self):
-        for row in self.matrix:
-            print(" ".join(str(elem) for elem in row))
+    def __str__(self):
+        output = ''
+        for j in range(self.rows):
+            output += ' '.join(str(i) for i in self.elements[j]) + '\n'
+        return output
 
-# Пример использования класса Matrix
-rows = int(input("Enter number of rows: "))
-cols = int(input("Enter number of columns: "))
+# Создание объекта класса Matrix
+matrix = Matrix()
 
-matrix = Matrix(rows, cols)
+# Заполнение матрицы
 matrix.input_matrix()
 
-print("\nMatrix:")
-matrix.display_matrix()
+# Вывод матрицы на экран
+print(matrix)
